@@ -1,5 +1,7 @@
 package com.lantai.reader.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,6 +34,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -848,6 +851,7 @@ fun MineScreen(onOpenTab: (Int) -> Unit = {}) {
 
     val update = updateOpen
     if (update != null) {
+        val ctx = LocalContext.current
         AlertDialog(
             onDismissRequest = { updateOpen = null },
             containerColor = C.bg1,
@@ -869,9 +873,19 @@ fun MineScreen(onOpenTab: (Int) -> Unit = {}) {
                     overflow = TextOverflow.Ellipsis
                 )
             },
-            confirmButton = {
+            dismissButton = {
                 TextButton(onClick = { updateOpen = null }) {
                     Text(t("关闭"), fontSize = 12.sp, color = C.tx3)
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    updateOpen = null
+                    if (update.url.isNotEmpty()) {
+                        ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(update.url)))
+                    }
+                }) {
+                    Text(t("下载"), fontSize = 12.sp, color = C.acc)
                 }
             }
         )

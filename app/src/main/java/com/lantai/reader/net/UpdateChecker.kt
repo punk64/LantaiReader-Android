@@ -18,7 +18,7 @@ data class UpdateResult(
 )
 
 object UpdateChecker {
-    const val fallback: String = "lantai-reader/LantaiReader"
+    const val fallback: String = "punk64/LantaiReader-Android"
 
     fun source(): String {
         val saved = Prefs.read(PrefKeys.repo).trim()
