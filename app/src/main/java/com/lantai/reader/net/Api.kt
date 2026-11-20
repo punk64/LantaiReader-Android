@@ -2,6 +2,7 @@ package com.lantai.reader.net
 
 import com.lantai.reader.common.J
 import com.lantai.reader.common.t
+import com.lantai.reader.common.tf
 import com.lantai.reader.model.AnnotationMapper
 import com.lantai.reader.model.BookAnnotation
 import com.lantai.reader.model.BookItem
@@ -332,7 +333,7 @@ class LantaiApi(private val session: LtSession) {
         if (res.status != 200) throw ApiError(res.status, t("页图 HTTP ${res.status} · ${res.bytes.size} B"))
         val type = res.contentType.lowercase()
         if (type.isNotEmpty() && !type.startsWith("image/")) {
-            throw ApiError(res.status, t("页图格式异常 ${res.contentType}"))
+            throw ApiError(res.status, tf("页图格式异常 {0}", listOf(res.contentType)))
         }
         if (res.bytes.isEmpty()) throw ApiError(res.status, t("页图为空"))
         return res.bytes
@@ -380,7 +381,7 @@ class LantaiApi(private val session: LtSession) {
         if (res.status != 200) throw ApiError(res.status, t("头像 HTTP ${res.status}"))
         val type = res.contentType.lowercase()
         if (type.isNotEmpty() && !type.startsWith("image/")) {
-            throw ApiError(res.status, t("头像格式异常 ${res.contentType}"))
+            throw ApiError(res.status, tf("头像格式异常 {0}", listOf(res.contentType)))
         }
         return res.bytes
     }

@@ -20,8 +20,8 @@ android {
         applicationId = "com.lantai.reader"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1000008
-        versionName = "0.0.8"
+        versionCode = 1000009
+        versionName = "0.0.9"
     }
 
     signingConfigs {

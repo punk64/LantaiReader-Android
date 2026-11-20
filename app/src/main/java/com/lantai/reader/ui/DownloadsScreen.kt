@@ -39,6 +39,7 @@ import com.lantai.reader.common.Glyph
 import com.lantai.reader.common.Tip
 import com.lantai.reader.common.Tm
 import com.lantai.reader.common.t
+import com.lantai.reader.common.tf
 import com.lantai.reader.data.JobRow
 import com.lantai.reader.data.OfflineBookRow
 import com.lantai.reader.data.offlineDb
@@ -384,7 +385,7 @@ fun DownloadsScreen() {
                 StatLine(
                     glyph = "download",
                     label = t("离线占用"),
-                    value = t("${F.bytes(books.sumOf { it.bytes })} · ${books.size} 本")
+                    value = tf("{0} · {1} 本", listOf(F.bytes(books.sumOf { it.bytes }), books.size.toString()))
                 )
                 StatLine(
                     glyph = "upload",

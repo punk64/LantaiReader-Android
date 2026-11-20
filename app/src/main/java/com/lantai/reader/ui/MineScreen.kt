@@ -229,6 +229,7 @@ private class MineCtl(val scope: CoroutineScope) {
 
     fun pickLang(code: String) {
         Lang.apply(code)
+        com.lantai.reader.reader.ReaderHost.invalidateLang()
         refreshLabels()
         scope.launch { loadMetrics() }
     }
@@ -709,7 +710,7 @@ fun MineScreen(onOpenTab: (Int) -> Unit = {}) {
                 NavRow(
                     glyph = "type",
                     title = t("界面语言"),
-                    sub = t("简体中文与 English"),
+                    sub = t("简体中文 / English / 日本語"),
                     right = langText,
                     onTap = { langOpen = true }
                 )
@@ -804,9 +805,9 @@ fun MineScreen(onOpenTab: (Int) -> Unit = {}) {
     if (langOpen) {
         PickDialog(
             title = t("界面语言"),
-            options = listOf("简体中文", "English"),
+            options = listOf("简体中文", "English", "日本語"),
             onPick = {
-                ctl.pickLang(if (it == 1) "en" else "zh")
+                ctl.pickLang(if (it == 1) "en" else if (it == 2) "ja" else "zh")
                 langOpen = false
             },
             onDismiss = { langOpen = false }

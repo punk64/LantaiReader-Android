@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.webkit.WebViewAssetLoader
+import com.lantai.reader.common.Lang
 import com.lantai.reader.common.ProgressMarks
 import com.lantai.reader.model.BookItem
 import com.lantai.reader.model.Store
@@ -65,6 +66,7 @@ object ReaderHost {
     var web: WebView? = null
     var loadedBookId: String = ""
     var wantedId: String = ""
+    var loadedLang: String = ""
     var visible by mutableStateOf(false)
     var safeTop: Int = 0
     var safeBottom: Int = 0
@@ -79,14 +81,16 @@ object ReaderHost {
     fun attach(view: WebView) {
         val id = wantedId
         if (id.isEmpty()) return
-        if (loadedBookId == id) return
+        val lang = Lang.code
+        if (loadedBookId == id && loadedLang == lang) return
         loadedBookId = id
+        loadedLang = lang
         val token = try {
             URLEncoder.encode(id, "UTF-8")
         } catch (e: Throwable) {
             id
         }
-        val url = "$VIRTUAL_ORIGIN/$ENTRY_FILE?book=$token&st=$safeTop&sb=$safeBottom&r=${System.currentTimeMillis()}"
+        val url = "$VIRTUAL_ORIGIN/$ENTRY_FILE?book=$token&st=$safeTop&sb=$safeBottom&lang=$lang&r=${System.currentTimeMillis()}"
         try {
             view.post {
                 try {
@@ -101,8 +105,13 @@ object ReaderHost {
     fun reload() {
         if (wantedId.isEmpty()) return
         loadedBookId = ""
+        loadedLang = ""
         val view = web ?: return
         attach(view)
+    }
+
+    fun invalidateLang() {
+        loadedLang = ""
     }
 
     fun push(json: String) {

@@ -49,6 +49,7 @@ import com.lantai.reader.common.Glyph
 import com.lantai.reader.common.Tip
 import com.lantai.reader.common.Tm
 import com.lantai.reader.common.t
+import com.lantai.reader.common.tf
 import com.lantai.reader.components.CoverCache
 import com.lantai.reader.data.OfflineBookRow
 import com.lantai.reader.data.offlineDb
@@ -478,7 +479,7 @@ fun SourcesScreen() {
                         Store.localRoot = ""
                         Store.localRootStale = false
                         reload()
-                        Tip.show(t("已移除全部本地书，释放 ${F.bytes(freed)}"))
+                        Tip.show(tf("已移除全部本地书，释放 {0}", listOf(F.bytes(freed))))
                     }
                 }) {
                     Text(t("移除"), fontSize = 12.sp, color = C.bad)

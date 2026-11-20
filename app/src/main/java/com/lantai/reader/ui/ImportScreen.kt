@@ -44,6 +44,7 @@ import com.lantai.reader.common.F
 import com.lantai.reader.common.Tip
 import com.lantai.reader.common.Tm
 import com.lantai.reader.common.t
+import com.lantai.reader.common.tf
 import com.lantai.reader.local.ComicArchive
 import com.lantai.reader.local.LocalFiles
 import com.lantai.reader.local.LocalLibrary
@@ -219,7 +220,7 @@ fun ImportScreen() {
                 } else {
                     merge(picked)
                     val failed = uris.size - picked.size
-                    Tip.show(if (failed > 0) t("已导入 ${picked.size} 本，失败 $failed 本") else t("已导入 ${picked.size} 本"))
+                    Tip.show(if (failed > 0) tf("已导入 {0} 本，失败 {1} 本", listOf(picked.size.toString(), failed.toString())) else tf("已导入 {0} 本", listOf(picked.size.toString())))
                 }
             } catch (e: Throwable) {
                 Tip.show(t("导入失败：${e.message ?: ""}"))
@@ -254,7 +255,7 @@ fun ImportScreen() {
         ScreenHead(
             title = t("导入本地文件"),
             sub = if (books.isNotEmpty()) {
-                t("已导入 ${books.size} 本 · 占用 ${F.bytes(usedBytes())}")
+                tf("已导入 {0} 本 · 占用 {1}", listOf(books.size.toString(), F.bytes(usedBytes())))
             } else {
                 t("导入后复制到应用内，不上传")
             },
@@ -488,7 +489,7 @@ fun ImportScreen() {
             title = { Text(t("移除本地书"), fontSize = 15.sp, fontFamily = Disp, color = C.tx) },
             text = {
                 Text(
-                    t("确定移除《${titleOf(target.name)}》？应用内副本与封面会一并删除。"),
+                    tf("确定移除《{0}》？应用内副本与封面会一并删除。", listOf(titleOf(target.name))),
                     fontSize = 11.5.sp,
                     color = C.tx3,
                     lineHeight = 18.sp
@@ -517,7 +518,7 @@ fun ImportScreen() {
             title = { Text(t("清理全部本地书"), fontSize = 15.sp, fontFamily = Disp, color = C.tx) },
             text = {
                 Text(
-                    t("将删除 ${books.size} 条记录、应用内副本与封面，共 ${F.bytes(usedBytes())}。授权目录中的原文件不会被删除。"),
+                    tf("将删除 {0} 条记录、应用内副本与封面，共 {1}。授权目录中的原文件不会被删除。", listOf(books.size.toString(), F.bytes(usedBytes()))),
                     fontSize = 11.5.sp,
                     color = C.tx3,
                     lineHeight = 18.sp

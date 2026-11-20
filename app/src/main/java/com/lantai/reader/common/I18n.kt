@@ -4,16 +4,31 @@ object Lang {
     var code: String = "zh"
     val en: String = "en"
     val zh: String = "zh"
+    val ja: String = "ja"
 
     fun set(v: String) {
-        code = if (v == en) en else zh
+        code = when (v) {
+            en -> en
+            ja -> ja
+            else -> zh
+        }
     }
 
     fun isEn(): Boolean = code == en
 
-    fun label(): String = if (isEn()) "English" else "简体中文"
+    fun isJa(): Boolean = code == ja
 
-    fun tag(): String = if (isEn()) "en-US" else "zh-CN"
+    fun label(): String = when (code) {
+        en -> "English"
+        ja -> "日本語"
+        else -> "简体中文"
+    }
+
+    fun tag(): String = when (code) {
+        en -> "en-US"
+        ja -> "ja-JP"
+        else -> "zh-CN"
+    }
 
     fun apply(v: String) {
         set(v)
@@ -52,10 +67,12 @@ object StrTpl {
 }
 
 fun t(zh: String): String {
-    if (Lang.code != Lang.en) return zh
-    val hit = StrEn.map[zh]
+    if (Lang.code == Lang.zh) return zh
+    val map = if (Lang.isJa()) StrJa.map else StrEn.map
+    val templates = if (Lang.isJa()) StrJa.templates else StrEn.templates
+    val hit = map[zh]
     if (hit != null) return hit
-    return StrTpl.apply(zh, StrEn.templates)
+    return StrTpl.apply(zh, templates)
 }
 
 fun tf(zh: String, args: List<String>): String {
